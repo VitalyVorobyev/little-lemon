@@ -5,53 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaskedTextInput } from 'react-native-mask-text';
 import { Checkbox } from 'react-native-paper';
 
+import { useUserData } from '../hooks/UserDataContext';
+
 export default ProfileScreen = (props) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [avatar, setAvatar] = useState(null);
-  const [notifications, setNotifications] = useState({
-    OrderStatus: false,
-    PasswordChanges: false,
-    SpecialOffers: false,
-    Newsletter: false,
-  });
-
-  useEffect(() => {
-    const loadUserData = async () => {
-      const savedFirstName = await AsyncStorage.getItem('firstName');
-      const savedLastName = await AsyncStorage.getItem('lastName');
-      const savedEmail = await AsyncStorage.getItem('email');
-      const savedAvatar = await AsyncStorage.getItem('avatar');
-      const savedPhone = await AsyncStorage.getItem('phone');
-      const savedNotifications = await AsyncStorage.getItem('notifications');
-
-      if (savedFirstName) setFirstName(savedFirstName);
-      if (savedEmail) setEmail(savedEmail);
-      if (savedAvatar) setAvatar(savedAvatar);
-      if (savedPhone) setPhone(savedPhone);
-      if (savedLastName) setLastName(savedLastName);
-      if (savedNotifications) setNotifications(JSON.parse(savedNotifications));
-    };
-
-    loadUserData();
-  }, []);
-
-  const handleSaveChanges = async () => {
-    await AsyncStorage.setItem('firstName', firstName);
-    await AsyncStorage.setItem('lastName', lastName);
-    await AsyncStorage.setItem('email', email);
-    await AsyncStorage.setItem('phone', phone);
-    await AsyncStorage.setItem('avatar', avatar);
-    await AsyncStorage.setItem('notifications', JSON.stringify(notifications));
-  };
+  const { firstName, lastName, email, avatar, phone, notifications,
+        setFirstName, setLastName, setEmail, setAvatar, setPhone, setNotifications,
+        handleSaveChanges } = useUserData();
 
   const handleLogout = () => {
-    console.log('Logging out');
-    const dologout = async () => {
-      await AsyncStorage.clear();
-    }
+    const dologout = async () => await AsyncStorage.clear();
     dologout();
     props.setLoggedin(false);
   };
@@ -80,7 +42,7 @@ export default ProfileScreen = (props) => {
           <Image source={{ uri: avatar }} style={styles.profileImage} />
         ) : (
           <View style={styles.placeholderImage}>
-            <Text style={styles.initials}>{(firstName[0] || '') + (lastName[0] || '')}</Text>
+            <Text style={styles.initials}>{(firstName[0] || '') + (lastName ? lastName[0] : '')}</Text>
           </View>
         )}
         <Pressable style={styles.changeButton} onPress={pickImage}>
