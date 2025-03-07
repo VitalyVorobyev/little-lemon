@@ -17,16 +17,10 @@ export default Navigation = () => {
   const { isLoading, firstName, avatar, lastName, email } = useUserData();
   const [screens, setScreens] = useState([]);
   const [initialRouteName, setInitialRouteName] = useState(null);
-  const [loggedin, setLoggedin] = useState(false);
-
-  useEffect(() => {
-    setLoggedin(firstName !== null && email !== null);
-  }, [firstName, email]);
 
   useEffect(() => {
     const getHeader = (props) => <Header {...props} avatar={avatar} firstName={firstName} lastName={lastName} />;
-    console.log('loggedin', loggedin);
-    if (loggedin) {
+    if (firstName && email) {
       setInitialRouteName('Home');
       setScreens([
         <Stack.Screen
@@ -39,7 +33,7 @@ export default Navigation = () => {
         />,
         <Stack.Screen
           name="Profile"
-          children={(props) => <ProfileScreen {...props} setLoggedin={setLoggedin} />}
+          component={ProfileScreen}
           options={{headerTitle: getHeader,}}
         />
       ]);
@@ -48,11 +42,11 @@ export default Navigation = () => {
       setScreens([
         <Stack.Screen
           name="Onboarding"
-          children={(props) => <OnboardingScreen {...props} setLoggedin={setLoggedin} />}
+          component={OnboardingScreen}
           options={{ headerShown: false }} />
       ]);
     }
-  }, [loggedin, firstName, avatar, lastName]);
+  }, [firstName, avatar, lastName, email]);
 
   if (isLoading) {
     return <SplashScreen />;
