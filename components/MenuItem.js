@@ -1,6 +1,6 @@
-import { Image, View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-const get_image_url = (name) => `https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/${name}?raw=true`
+import CachedImage from './CachedImage';
 
 export default MenuItem = ({ item }) => {
   return (
@@ -10,10 +10,12 @@ export default MenuItem = ({ item }) => {
         <Text style={styles.menuDescription} numberOfLines={2} ellipsizeMode="tail">
           {item.description}
         </Text>
-        <Text style={styles.menuPrice}>${item.price.toFixed(2)}</Text>
+        <Text style={styles.menuPrice}>
+          ${item.price.toFixed(2)}
+        </Text>
       </View>
-      <Image
-        source={{uri: get_image_url(item.image)}}
+      <CachedImage
+        imageName={item.image}
         style={styles.menuImage}
         accessibilityLabel={`${item.name} image`}
       />

@@ -10,50 +10,54 @@ export default Header = (props) => {
         source={require('../assets/Logo.png')}
         resizeMode='contain'
       />
-      <Pressable onPress={() => navigation.push('Profile')}>
-        { props.avatar ? (
-            <Image source={{ uri: props.avatar }} style={styles.profileImage} />
-          ) : (
-            <View style={styles.placeholderImage}>
-              <Text style={styles.initials}>
-                {(props.firstName[0] || '') + (props.lastName[0] || '')}
-              </Text>
-            </View>
-          )
-        }
+      
+      <Pressable style={styles.profileContainer} onPress={() => navigation.push('Profile')}>
+        {props.avatar ? (
+          <Image source={{ uri: props.avatar }} style={styles.profileImage} />
+        ) : (
+          <View style={[styles.profileImage, styles.placeholderImage]}>
+            <Text style={styles.initials}>
+              {(props.firstName[0] || '') + (props.lastName ? props.lastName[0] : '')}
+            </Text>
+          </View>
+        )}
       </Pressable>
     </View>
-    );
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    margin: 0,
+    justifyContent: 'space-between', // Ensures profile icon stays on the right
+    paddingHorizontal: 20,
     height: 60,
-    width: '100%'
+    width: 400,
+    position: 'relative',
   },
   logo: {
-    height: 40
+    height: 30,
+    position: 'absolute',
+    left: '50%',
+    transform: [{ translateX: -74 }], // Centers the logo
+  },
+  profileContainer: {
+    marginLeft: 'auto', // Pushes the profile icon to the right
   },
   profileImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 15
+    width: 26,
+    height: 26,
+    borderRadius: '50%',
   },
   placeholderImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
     backgroundColor: '#CCC',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   initials: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFF'
+    color: '#FFF',
   }
 });

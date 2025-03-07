@@ -69,7 +69,6 @@ export async function filterByQueryAndCategories(query, activeCategories) {
     }
 
     const result = await db.getAllAsync(sql, params);
-    console.log('result', result);
     return result;
   } catch (error) {
     console.error('Error filtering menu items:', error);

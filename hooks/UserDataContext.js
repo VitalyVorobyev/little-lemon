@@ -44,12 +44,12 @@ export const UserDataProvider = ({ children }) => {
 
   const handleSaveChanges = async () => {
     try {
-      await AsyncStorage.setItem('firstName', firstName);
-      await AsyncStorage.setItem('lastName', lastName);
-      await AsyncStorage.setItem('email', email);
-      await AsyncStorage.setItem('phone', phone);
-      await AsyncStorage.setItem('avatar', avatar);
-      await AsyncStorage.setItem('notifications', JSON.stringify(notifications));
+      if (firstName) await AsyncStorage.setItem('firstName', firstName);
+      if (lastName) await AsyncStorage.setItem('lastName', lastName);
+      if (email) await AsyncStorage.setItem('email', email);
+      if (phone) await AsyncStorage.setItem('phone', phone);
+      if (avatar) await AsyncStorage.setItem('avatar', avatar);
+      if (notifications) await AsyncStorage.setItem('notifications', JSON.stringify(notifications));
     } catch (error) {
       console.error('Error saving user data:', error);
     }
