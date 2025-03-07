@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Image, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
 import { launchImageLibraryAsync } from 'expo-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaskedTextInput } from 'react-native-mask-text';
 import { Checkbox } from 'react-native-paper';
 
@@ -10,12 +8,11 @@ import { useUserData } from '../hooks/UserDataContext';
 export default ProfileScreen = (props) => {
   const { firstName, lastName, email, avatar, phone, notifications,
         setFirstName, setLastName, setEmail, setAvatar, setPhone, setNotifications,
-        handleSaveChanges } = useUserData();
+        handleSaveChanges, clearState } = useUserData();
 
   const handleLogout = () => {
-    const dologout = async () => await AsyncStorage.clear();
-    dologout();
     props.setLoggedin(false);
+    (async () => await clearState())();
   };
 
   const pickImage = async () => {

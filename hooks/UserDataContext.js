@@ -55,6 +55,21 @@ export const UserDataProvider = ({ children }) => {
     }
   };
 
+  const clearState = async () => {
+    await AsyncStorage.clear();
+    setFirstName('');
+    setEmail(null);
+    setAvatar(null);
+    setPhone(null);
+    setLastName('');
+    setNotifications({
+      OrderStatus: false,
+      PasswordChanges: false,
+      SpecialOffers: false,
+      Newsletter: false,
+    });
+  }
+
   return (
     <UserDataContext.Provider
       value={{
@@ -71,7 +86,8 @@ export const UserDataProvider = ({ children }) => {
         setAvatar,
         setPhone,
         setNotifications,
-        handleSaveChanges
+        handleSaveChanges,
+        clearState
       }}
     >
       {children}

@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Keyboard, Image, TouchableWithoutFeedback, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default OnboardingScreen = (props) => {
-  const [firstName, setFirstName] = useState('');
-  const [email, setEmail] = useState('');
+import { useUserData } from '../hooks/UserDataContext';
+
+export default OnboardingScreen = () => {
+  const [name, setName] = useState('');
+  const [useremail, setUseremail] = useState('');
+  const { handleLogIn } = useUserData();
   const [buttunDisabled, setButtonDisabled] = useState(true);
 
   useEffect(() => {
-    const isFirstNameValid = /^[A-Za-z]+$/.test(firstName) && firstName.trim() !== '';
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isFirstNameValid = /^[A-Za-z]+$/.test(name) && name.trim() !== '';
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(useremail);
     setButtonDisabled(!isFirstNameValid || !isEmailValid);
-  }, [firstName, email]);
+  }, [name, useremail]);
 
   const saveUserData = async () => {
     try {
-      await AsyncStorage.setItem('firstName', firstName);
-      await AsyncStorage.setItem('email', email);
-      props.setLoggedin(true);
+      handleLogIn(name, useremail);
     } catch(e) {
       Alert.alert(e);
     }
@@ -33,16 +33,16 @@ export default OnboardingScreen = (props) => {
         <Text style={styles.label}>First Name</Text>
         <TextInput 
           style={styles.input} 
-          value={firstName} 
-          onChangeText={setFirstName} 
+          value={name} 
+          onChangeText={setName} 
           placeholder="Enter your first name"
           placeholderTextColor="#A9A9A9"
         />
         <Text style={styles.label}>Email</Text>
         <TextInput 
           style={styles.input} 
-          value={email} 
-          onChangeText={setEmail} 
+          value={useremail} 
+          onChangeText={setUseremail} 
           placeholder="Enter your email"
           placeholderTextColor="#A9A9A9"
           keyboardType="email-address"
